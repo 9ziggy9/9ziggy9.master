@@ -1,0 +1,81 @@
+@mixin grid_main {
+    display               : grid;
+    grid-template-columns : 1fr 16fr;
+    grid-template-rows    : 2em 4fr 1em;
+    grid-column-gap       : 0px;
+    grid-row-gap          : 0px;
+}
+
+@mixin grid_chat {
+    display               : grid;
+    grid-template-columns : 1fr;
+    grid-template-rows    : 1fr 4em;
+    grid-column-gap       : 0px;
+    grid-row-gap          : 0px;
+}
+
+@mixin grid_msg {
+    display: grid;
+    grid-template-columns : 8.5fr 1.5fr;
+    grid-template-rows    : 1fr;
+    grid-column-gap       : 0px;
+    grid-row-gap          : 0px;
+}
+
+@mixin grid_win {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.75em 1fr;
+}
+
+@mixin flex_center {
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+}
+
+@mixin flex_between {
+    display         : flex;
+    justify-content : space-between;
+    align-items     : center;
+}
+
+@mixin transflate($t, $l, $tt, $tl) {
+    top: $t; left: $l;
+    transform: translate($tt, $tl);
+}
+
+$FONT_SZ_STD: 2rem;
+$FONT_SZ_BTW: 1.75rem;
+$FONT_SZ_MIN: 1.5rem;
+$FONT_SZ_TNY: 1rem;
+@mixin font_default {
+    font-family         : "Pixelify Sans", sans-serif;
+    font-optical-sizing : auto;
+    font-size           : $FONT_SZ_STD;
+    font-style          : normal;
+}
+
+@mixin padding_std           { padding-left: 1rem; padding-right: 1rem; }
+@mixin padding_thin          { padding: 0.5rem 0.5rem; }
+@mixin chat_in_border($clr)  { border: 0.1rem solid $clr; }
+
+@mixin base_full_screen {
+    margin: 0; padding : 0; width: 100%; height: 100%;
+}
+@mixin min_fs { min-width: 100%; min-height: 100%; }
+
+$CLR_BLACK : var(--color-black);
+$CLR_WHITE : var(--color-white);
+$CLR_DARK  : var(--color-dark);
+$CLR_GREEN : var(--color-green);
+$CLR_BLUE  : var(--color-blue);
+$CLR_RED   : var(--color-red);
+$CLR_DGRAY : var(--color-darker-gray);
+$CLR_GRAY  : var(--color-gray);
+$CLR_YEL   : var(--color-yellow);
+
+@mixin color_pair($bg_clr, $fg_clr) {
+  background-color : $bg_clr;
+  color            : $fg_clr;
+}

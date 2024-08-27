@@ -1,0 +1,26 @@
+@use "vars" as *;
+
+.navanchor {
+  @include padding_thin;
+  font-size       : $FONT_SZ_MIN;
+  color           : $CLR_WHITE;
+  text-decoration : none;
+  &:hover  { @include color_pair($CLR_DARK,  $CLR_GREEN); }
+  &.active { @include color_pair($CLR_GREEN, $CLR_BLACK); }
+}
+
+.topnav {
+    @include flex_between;
+    background-color : $CLR_DARK;
+    overflow         : hidden;
+    height           : 2em;
+    span { @include flex_center; font-size: $FONT_SZ_STD; }
+}
+
+.clock {
+    @include padding_thin;
+    color           : $CLR_WHITE;
+    text-decoration : none;
+    font-size       : $FONT_SZ_MIN;
+    p { color: $CLR_GREEN; }
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Cache-Control"
+          content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link
+      href="https://fonts.googleapis.com/css2?family=
+            Jersey+15&family=Pixelify+Sans"
+      rel="stylesheet">
+    <link 
+      rel="preload"
+      as="style" onload="this.rel = 'stylesheet'"
+      href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined&display=block">
+    <title>9ziggy9</title>
+  </head>
+  <body>
+    <!-- APP --->
+    <div class="app-container init-load-anim" id="app-container">
+    <!-- TOP NAVIGATION -->
+      <div class="topnav grid-main-top-bar" id="topnav">
+        <div class="topnav-left">
+          <div class="navanchor">
+            <span id="view-chat-btn" class="material-symbols-outlined">
+              chat
+            </span>
+          </div>
+        </div>
+        <div class="topnav-right">
+          <div class="clock" id="clock"><p>12:00 PM</p></div>
+        </div>
+      </div> 
+
+      <!-- MAIN AREA -->
+      <div class="main grid-main-main" id="main">
+
+      <!-- DESKTOP VIEW -->
+      <div class="view-desktop" id="view-desktop">
+        <h1 class="logo-background-anim">
+          <span>9</span><span>z</span><span>i</span><span>g</span><span>g</span><span>y</span><span>9</span>
+        </h1>
+      </div>
+
+      <div id="view-chat"></div>
+      <div id="view-chat-uname"></div>
+      <div id="view-chat-popup"></div>
+      <div id="view-login"></div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer grid-main-footer" id="footer">
+      <div class="footer-right" id="footer-right">
+        <div id="color-theme-btn">
+          <span class="material-symbols-outlined">palette</span>
+        </div>
+      </div>
+      <p>9ziggy9</p>
+      <!-- <p>9ziggy9</p> -->
+    </div>
+  </body>
+
+<template id="--templ-view-chat">
+  <div class="chat-outer">
+    <div class="chat-stream" id="chat-stream">
+      <div class="chat-stream-display">
+        <div id="chat-stream-messages" class="chat-stream-messages">
+          <div id="chat-stream-msg-container" class="chat-stream-msg-container">
+          </div>
+        </div>
+        <div id="chat-stream-online" class="chat-stream-online"></div>
+    </div>
+  </div>
+  <div class="chat-send" id="chat-send">
+    <div class="chat-stream-comm-container">
+      <textarea id="chat-input"
+                class="textbox"
+                placeholder="type here"></textarea>
+      <div class="btn-stack">
+        <button id="chat-btn-send" type="button">
+          <span class="material-symbols-outlined">send</span>
+        </button>
+        <button id="chat-btn-cancel" type="button">
+          <span class="material-symbols-outlined">backspace</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="--templ-view-chat-uname">
+  <div class="view-chat-uname-contain">
+    <div class="view-chat-uname-contain-input">
+      <input type="text"
+             spellcheck="false"
+             id="chat-uname-in"
+             name="chat-uname-in">
+    </div>
+  </div>
+</template>
+
+<template id="--templ-view-chat-popup">
+  <div class="view-chat-popup-contain">
+    <div class="view-chat-popup-contain-input">
+      <input type="text"
+             spellcheck="false"
+             id="chat-connect-in"
+             name="chat-connect-in">
+    </div>
+  </div>
+</template>
+
+<template id="--templ-auth">
+  <div class="view-login-outer">
+    <div id="login-errors" class="view-login-errors"></div>
+    <div class="view-login-inner">
+      <fieldset>
+        <legend id="input-legend">username</legend>
+        <input type="text"
+              spellcheck="false"
+              id="login-in"
+              name="login-in-name">
+      </fieldset>
+      <div id="login-btns" class="login-btns">
+        <div id="login-mode-btns">
+          <button id="login-btn-register">register</button>
+          <button id="login-btn-login" class="login-btn-on">login</button>
+        </div>
+        <div id="login-action-btns"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+</html>

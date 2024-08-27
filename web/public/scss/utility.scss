@@ -1,0 +1,34 @@
+@use "vars" as *;
+
+.utility-menu {
+    @include color_pair($CLR_BLACK, $CLR_GREEN);
+    position      : absolute;
+    border        : 0.065rem solid $CLR_GRAY;
+    border-radius : 0.24rem;
+    font-size     : $FONT_SZ_MIN;
+    z-index       : 1;
+    padding       : 0.88rem;
+    &-btn {
+        @include color_pair($CLR_GREEN, $CLR_BLACK);
+        &-on {
+            @include color_pair($CLR_BLACK, $CLR_GREEN);
+            border-radius : 0.24rem;
+            border        : 0.065rem solid $CLR_GRAY;
+        }
+    }
+    &-field-btn {
+        border-bottom: 0.024rem dashed var(--color-gray);
+        &:hover         { @include color_pair($CLR_YEL, $CLR_BLACK); }
+        &:first-of-type { border-top: 0.012rem dashed $CLR_GRAY; }
+    }
+}
+
+#color-theme-btn {
+    radius: 0.25rem;
+    z-index: 2;
+    &:hover { color: $CLR_GREEN; }
+}
+
+.color-theme-btn-on {
+    @include color_pair($CLR_BLUE, $CLR_BLACK);
+}

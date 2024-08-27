@@ -1,0 +1,60 @@
+@use "vars" as *;
+
+@keyframes win-pop-in {
+    0% {
+        opacity           : 0;
+        transform-origin  : 50% 50%;
+        transform         : scale(1.5, 1.5);
+        filter            : blur(90px);
+       }
+    100% {
+        opacity          : 1;
+        transform-origin : 50% 50%;
+        transform        : scale(1, 1);
+        filter           : blur(0px);
+    }
+}
+
+@keyframes win-pop-out {
+    0% {
+        opacity          : 1;
+        transform-origin : 50% 50%;
+        transform        : scale(1, 1);
+        filter           : blur(0px);
+       }
+    100% {
+        opacity          : 0;
+        transform-origin : 50% 50%;
+        transform        : scale(.25, .25);
+        filter           : blur(90px);
+        display          : none !important;
+    }
+}
+
+@keyframes init-load {
+    0%   { opacity: 0; filter: blur(150px); }
+    100% { opacity: 1; filter: blur(0px);   }
+}
+
+.init-load-anim      { animation: init-load 0.66s both;   }
+.win-pop-view-in     { animation: win-pop-in 0.33s both;  }
+.win-pop-view-out    { animation: win-pop-out 0.33s both; }
+.fullscreen-view-in  { transition: width 0.33s ease, height 0.33s ease; }
+.fullscreen-view-out { transition: width 0.33s ease, height 0.33s ease; }
+
+@keyframes logo-background-kfs {
+    0%    { color: $CLR_WHITE; }
+    75%   { color: $CLR_GREEN; }
+    100%  { color: $CLR_WHITE; }
+}
+
+@mixin anim_loop_with_delay($anim, $t, $dt) {
+    animation       : $anim $t infinite;
+    animation-delay : $dt;
+}
+
+@for $k from 1 through 7 {
+    .logo-background-anim span:nth-child(#{$k}) {
+        @include anim_loop_with_delay(logo-background-kfs, 2s, #{$k}s);
+    }
+}

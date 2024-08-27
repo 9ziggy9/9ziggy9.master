@@ -1,0 +1,35 @@
+@use "vars" as *;
+
+.fullscreen {
+    top              : 0;
+    left             : 0;
+    z-index          : 1;
+    position         : absolute;
+    background-color : $CLR_BLACK;
+    box-sizing       : border-box;
+}
+
+.view-win {
+    @include grid_win;
+    border        : 0.125rem solid $CLR_GREEN;
+    border-radius : 0.5rem;
+}
+
+.winbar {
+    @include color_pair($CLR_GREEN, $CLR_BLACK);
+    grid-area       : 1/1/2/2;
+    font-size       : $FONT_SZ_TNY;
+    display         : flex;
+    justify-content : space-between;
+    height          : 100%;
+    &-left, &-right {
+        @include flex_center;
+        span { font-size: $FONT_SZ_TNY; padding: 0.25rem; }
+    }
+    &-right {
+        span:hover { font-size: 1.25rem; }
+    }
+    &-close {
+        width: 100%;
+    }
+}
