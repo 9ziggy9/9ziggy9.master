@@ -242,7 +242,7 @@ function main(): void {
         to_server.append("pwd", pwd);
         if (reg) to_server.append("reg", reg.toString());
         const endpoint = env.VARS.GATEWAY_DB +
-          (this.currentMode === "login" ? "login" : "register");
+          (this.currentMode === "login" ? "/login" : "/register");
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },

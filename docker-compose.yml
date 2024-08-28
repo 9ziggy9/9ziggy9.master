@@ -1,10 +1,29 @@
 services:
-  web:
+  pg:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB       : ${DB_NAME}
+      POSTGRES_PASSWORD : ${DB_PASS}
+      POSTGRES_USER     : ${DB_USER}
+    networks:
+      - appnetwork
+
+  db:
     build:
       context: .
-      dockerfile: web/Dockerfile
+      dockerfile: ${DIR_DB}/Dockerfile
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+    depends_on:
+      - pg
     ports:
-      - "9002:9002"
+      - "${PORT_DB}:${PORT_DB}"
+    networks:
+      - appnetwork
 
   proxy:
     image: nginx:latest
@@ -12,3 +31,21 @@ services:
       - "${PORT_PROXY}:${PORT_PROXY}"
     volumes:
       - ./${DIR_PROXY}/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - db
+    networks:
+      - appnetwork
+
+  web:
+    build:
+      context: .
+      dockerfile: ${DIR_WEB}/Dockerfile
+    ports:
+      - "${PORT_WEB}:${PORT_WEB}"
+    depends_on:
+      - proxy
+    networks:
+      - appnetwork
+
+networks:
+  appnetwork:

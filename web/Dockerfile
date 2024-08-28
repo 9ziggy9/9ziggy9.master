@@ -2,12 +2,10 @@ FROM golang:1.23.0 AS go-builder
 
 WORKDIR /app
 
-COPY go.mod ./
-RUN go mod download
-
 COPY core/ ./core
-
 COPY web/ .
+
+RUN go mod download
 
 RUN go build -o main .
 

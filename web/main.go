@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-	"github.com/9ziggy9/9ziggy9.master/core"
+	"github.com/9ziggy9/core"
 )
 
 func LoadEnv(filename string) error {
