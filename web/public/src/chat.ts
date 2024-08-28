@@ -153,6 +153,7 @@ export function startSession(): Session {
     connect:
     (channel_number: number) => new Promise<WebSocket | null>((yes, no) => {
       _channel = channel_number;
+      console.log("Attempting connection to: ", env.VARS.GATEWAY_WS);
       _socket = new WebSocket(`${env.VARS.GATEWAY_WS}/${_channel}`);
       _socket.onopen  = () => yes(_socket);
       _socket.onclose = () => {

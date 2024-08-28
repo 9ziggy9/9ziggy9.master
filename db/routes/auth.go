@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -9,66 +8,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
-
-	"github.com/9ziggy9/9ziggy9.db/schema"
 	"github.com/9ziggy9/core"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/9ziggy9/9ziggy9.db/schema"
 )
-
-// RANDOMIZE
-var jwtKey = []byte("SUPER_SECRET");
-
-type JwtClaims struct {
-	Name string `json:"name"`;
-	ID   uint64 `json:"id"`;
-	jwt.StandardClaims;
-}
-
-type contextKey string
-const (
-	NameKey contextKey = "name"
-	IdKey   contextKey = "name"
-	RoleKey contextKey = "role"
-)
-
-func JwtMiddleware(next http.Handler, unprotected []string) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		for _, path := range unprotected {
-			if r.URL.Path == path {
-				next.ServeHTTP(w, r);
-				return;
-			}
-		}
-
-		tkn_cookie, err := r.Cookie("token");
-		if err != nil {
-			core.Log(core.ERROR, "missing jwt in request");
-			http.Error(w, "missing token", http.StatusUnauthorized);
-			return;
-		}
-
-		tkn_str  := tkn_cookie.Value;
-		claims   := &JwtClaims{};
-		tkn, err := jwt.ParseWithClaims(
-			tkn_str, claims,
-			func(tkn *jwt.Token) (interface{}, error) {
-				return jwtKey, nil
-			},
-		);
-
-		if err != nil || !tkn.Valid {
-			core.Log(core.ERROR, "invalid jwt in request");
-			http.Error(w, "invalid token", http.StatusUnauthorized);
-			return;
-		}
-
-		ctx := context.WithValue(r.Context(), NameKey, claims.Name);
-		ctx  = context.WithValue(ctx, IdKey, claims.ID);
-		ctx  = context.WithValue(ctx, RoleKey, "standard");
-
-		next.ServeHTTP(w, r.WithContext(ctx));
-	});
-}
 
 func Status(w http.ResponseWriter, r *http.Request) {
     tkn_cookie, err := r.Cookie("token");
@@ -79,10 +22,10 @@ func Status(w http.ResponseWriter, r *http.Request) {
     }
 
     tkn_str := tkn_cookie.Value
-    claims := &JwtClaims{}
+    claims := &core.JwtClaims{}
     tkn, err := jwt.ParseWithClaims(
 			tkn_str, claims,
-			func(tkn *jwt.Token) (interface{}, error) { return jwtKey, nil },
+			func(tkn *jwt.Token) (interface{}, error) { return core.JwtKey, nil },
     )
 
     if err != nil || !tkn.Valid {
@@ -148,7 +91,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 
 		user := maybe_user.Data;
 		if user.PwdOK(pwd) == true {
-			tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtClaims{
+			tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, &core.JwtClaims{
 				Name: user.Name,
 				ID: user.ID,
 				StandardClaims: jwt.StandardClaims{
@@ -156,7 +99,7 @@ func Login(db *sql.DB) http.HandlerFunc {
 				},
 			});
 
-			tkn_str, err := tkn.SignedString(jwtKey);
+			tkn_str, err := tkn.SignedString(core.JwtKey);
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError);
 				return;

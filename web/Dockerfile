@@ -5,6 +5,7 @@ WORKDIR /app
 COPY core/ ./core
 COPY web/ .
 
+RUN go mod tidy
 RUN go mod download
 
 RUN go build -o main .

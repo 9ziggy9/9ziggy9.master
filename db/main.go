@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
-	"strings"
 	"time"
 	"database/sql"
 	"net"
@@ -15,31 +13,6 @@ import (
 	"github.com/9ziggy9/9ziggy9.db/schema"
 	"github.com/9ziggy9/9ziggy9.db/routes"
 )
-
-func LoadEnv(filename string) error {
-	core.Log(core.INFO, "loading environment variables from %s ...", filename);
-	defer core.Log(core.SUCCESS, "environmental variables loaded");
-
-	file, err := os.Open(filename); if err != nil { return err; }
-	defer file.Close();
-
-	scanner := bufio.NewScanner(file);
-
-	for scanner.Scan() {
-		line := scanner.Text();
-		if len(line) == 0 || strings.HasPrefix(line, "#") { continue; } // comments
-
-		kvp := strings.SplitN(line, "=", 2);
-		if len(kvp) != 2 { continue; }
-
-		k := strings.TrimSpace(kvp[0]);
-		v := strings.TrimSpace(kvp[1]);
-		os.Setenv(k, v);
-	}
-	return scanner.Err();
-}
-
-const ENV_FILE string = "./.env";
 
 func routesMain(db *sql.DB) *http.ServeMux {
 	mux := http.NewServeMux();
@@ -59,12 +32,6 @@ func tcpConnect() net.Listener {
 		core.Log(core.ERROR, "failed to open TCP connection\n  -> %v", err);
 	}
 	return tcp_in;
-}
-
-func init() {
-	if err := LoadEnv(ENV_FILE); err != nil {
-		core.Log(core.ERROR, "failed to load environment variables:\n%v", err);
-	}
 }
 
 func main() {
@@ -88,7 +55,7 @@ func main() {
 	tcp_in := tcpConnect();
 
 	server := &http.Server{
-		Handler: routes.JwtMiddleware(
+		Handler: core.JwtMiddleware(
 			routesMain(db), []string{"/login", "/status", "/logout", "/register"},
 		),
 		ReadTimeout:  time.Second * 10,

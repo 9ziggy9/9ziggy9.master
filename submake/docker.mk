@@ -1,7 +1,7 @@
 .PHONY: up clean DEPLOY
 
 up:
-	docker-compose -f $(PATH_COMPOSE) build --no-cache
+	docker-compose -f $(PATH_COMPOSE) build --progress=plain --no-cache
 	docker-compose up
 
 %.build:
