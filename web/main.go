@@ -8,11 +8,12 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"github.com/9ziggy9/9ziggy9.master/core"
 )
 
 func LoadEnv(filename string) error {
-	ServerLog(INFO, "loading environment variables from %s ...", filename)
-	defer ServerLog(SUCCESS, "environmental variables loaded")
+	core.Log(core.INFO, "loading environment variables from %s ...", filename)
+	defer core.Log(core.SUCCESS, "environmental variables loaded")
 
 	file, err := os.Open(filename); if err != nil { return err }
 	defer file.Close()
@@ -62,13 +63,13 @@ func ipLogWrapper(next http.Handler) http.Handler {
 		if forwardedFor != "" {
 			// X-Forwarded-For might contain multiple IPs, take the first one
 			ip := strings.Split(forwardedFor, ",")[0]
-			ServerLog(INFO, "request from IP: %s", ip)
+			core.Log(core.INFO, "request from IP: %s", ip)
 		} else {
 			// Fallback to RemoteAddr
 			ip := r.RemoteAddr
 			host, _, err := net.SplitHostPort(ip)
 			if err != nil {
-				ServerLog(ERROR, "error splitting IP address: %v", err)
+				core.Log(core.ERROR, "error splitting IP address: %v", err)
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -78,7 +79,7 @@ func ipLogWrapper(next http.Handler) http.Handler {
 			} else if ipAddr != nil && ipAddr.To16() != nil {
 				ip = ipAddr.String()
 			}
-			ServerLog(INFO, "request from IP: %s", ip)
+			core.Log(core.INFO, "request from IP: %s", ip)
 		}
 		next.ServeHTTP(w, r)
 	})
@@ -108,7 +109,7 @@ func routes() {
 
 func init() {
 	if err := LoadEnv(ENV_FILE); err != nil {
-		ServerLog(ERROR, "failed to load environment variables:\n%v", err)
+		core.Log(core.ERROR, "failed to load environment variables:\n%v", err)
 	}
 }
 
@@ -121,7 +122,7 @@ func main() {
 	var wait_group sync.WaitGroup
 	wait_group.Add(1)
 
-	ServerLog(INFO, "initializing server on port %s ... ", server.Addr[1:])
+	core.Log(core.INFO, "initializing server on port %s ... ", server.Addr[1:])
 
 	go func() {
 		defer wait_group.Done()
@@ -130,10 +131,10 @@ func main() {
 
 		err := server.ListenAndServe();
 		if err != nil && err != http.ErrServerClosed {
-			ServerLog(ERROR, "server failure:\n%v", err)
+			core.Log(core.ERROR, "server failure:\n%v", err)
 		}
 	}()
 
-	ServerLog(SUCCESS, "server running on port %s ...", server.Addr[1:])
+	core.Log(core.SUCCESS, "server running on port %s ...", server.Addr[1:])
 	wait_group.Wait()
 }

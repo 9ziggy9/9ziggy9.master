@@ -8,7 +8,6 @@ type Environment = {
 export const VARS: Environment = { INITIALIZED: false };
 
 export function LOAD_VARS(): boolean {
-  console.log(process.env);
   VARS.PRODUCTION = JSON.parse(process.env.TS_PROD as string);
   VARS.GATEWAY_DB = VARS.PRODUCTION === true
     ? process.env.TS_GATEWAY_DB_PROD as string
