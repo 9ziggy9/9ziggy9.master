@@ -275,7 +275,6 @@ function main(): void {
       chSession.goOnline();
     }
   });
-
 }
 
 window.onload = main
