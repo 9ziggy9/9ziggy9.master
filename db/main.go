@@ -16,6 +16,10 @@ import (
 
 func routesMain(db *sql.DB) *http.ServeMux {
 	mux := http.NewServeMux();
+	mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK);
+		core.Log(core.SUCCESS, "PONG!");
+	});
 	mux.HandleFunc("GET /status",    routes.Status);
 	mux.HandleFunc("GET /users",     routes.GetUsers(db));
 	mux.HandleFunc("POST /users",    routes.CreateUser(db));
@@ -56,7 +60,9 @@ func main() {
 
 	server := &http.Server{
 		Handler: core.JwtMiddleware(
-			routesMain(db), []string{"/login", "/status", "/logout", "/register"},
+			routesMain(db), []string{
+				"/ping", "/login", "/status", "/logout", "/register",
+			},
 		),
 		ReadTimeout:  time.Second * 10,
 		WriteTimeout: time.Second * 10,

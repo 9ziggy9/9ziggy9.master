@@ -11,6 +11,8 @@ RUN go build -o main .
 
 FROM debian:bookworm-slim
 
+RUN apt-get update && apt-get install -y curl
+
 COPY --from=builder /app/main /app/main
 COPY .env /app/.env
 

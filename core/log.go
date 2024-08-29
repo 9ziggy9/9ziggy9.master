@@ -13,6 +13,7 @@ const (
 	SUCCESS
 	WARNING
 	ERROR
+	FATAL
 )
 
 var LogLevelStrMap = map[LogLevel]string{
@@ -20,6 +21,7 @@ var LogLevelStrMap = map[LogLevel]string{
 	SUCCESS: "SUCCESS",
 	WARNING: "WARNING",
 	ERROR:   "ERROR",
+	FATAL:   "FATAL",
 }
 
 func extractRuntimeMetaData(skip int) (string, string, int) {
@@ -81,6 +83,14 @@ func Log(lvl LogLevel, msg string, optargs ...interface{}) {
 	case ERROR:
 		fn, _, line := extractRuntimeMetaData(skip)
 		log.Printf(
+			logFmtErr,
+			ColorizeText(LogLevelStrMap[lvl], TEXT_COLORS.Red),
+			ColorizeText(fmt.Sprintf(msg, optargs...), TEXT_COLORS.Cyan),
+			fn, line,
+		)
+	case FATAL:
+		fn, _, line := extractRuntimeMetaData(skip)
+		log.Fatal(
 			logFmtErr,
 			ColorizeText(LogLevelStrMap[lvl], TEXT_COLORS.Red),
 			ColorizeText(fmt.Sprintf(msg, optargs...), TEXT_COLORS.Cyan),

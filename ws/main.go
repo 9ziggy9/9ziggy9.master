@@ -22,7 +22,9 @@ func tcpConnect() net.Listener {
 
 func routesMain(ws_rooms *client.WsRoomProvider) *http.ServeMux {
 	mux   := http.NewServeMux()
-	mux.Handle("/", core.JwtMiddleware(client.RoutesWS(ws_rooms), []string{}))
+	mux.Handle("/", core.JwtMiddleware(client.RoutesWS(ws_rooms), []string{
+		"/ping",
+	}))
 	return mux
 }
 

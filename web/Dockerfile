@@ -23,9 +23,9 @@ COPY .env ./
 RUN npm run build
 
 FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y curl
 
 COPY --from=go-builder /app/main /app/main
-
 COPY --from=ts-builder /app/dist /app/public/dist
 
 WORKDIR /app

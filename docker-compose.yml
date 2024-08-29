@@ -6,12 +6,12 @@ services:
       POSTGRES_PASSWORD : ${DB_PASS}
       POSTGRES_USER     : ${DB_USER}
     networks:
-      - internal_net
+      - api_net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -h localhost"]
-      interval: 30s
+      interval: 120s
       timeout: 10s
-      retries: 5
+      retries: 2
       start_period: 10s
 
   db:
@@ -26,18 +26,16 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       PORT_DB: ${PORT_DB}
-    ports:
-      - "${PORT_DB}:${PORT_DB}"
     networks:
-      - internal_net
+      - api_net
     depends_on:
       pg:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9004"]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT_DB}/ping"]
+      interval: 120s
       timeout: 10s
-      retries: 5
+      retries: 2
       start_period: 10s
 
   ws:
@@ -45,18 +43,16 @@ services:
     build:
       context: .
       dockerfile: ${DIR_WS}/Dockerfile
-    ports:
-      - "${PORT_WS}:${PORT_WS}"
     networks:
-      - internal_net
+      - api_net
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9003"]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT_WS}/ping"]
+      interval: 120s
       timeout: 10s
-      retries: 5
+      retries: 2
       start_period: 10s
 
   web:
@@ -66,15 +62,13 @@ services:
       dockerfile: ${DIR_WEB}/Dockerfile
     environment:
       PORT_WEB: ${PORT_WEB}
-    ports:
-      - "${PORT_WEB}:${PORT_WEB}"
     networks:
-      - internal_net
+      - api_net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9002"]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT_WEB}/ping"]
+      interval: 120s
       timeout: 10s
-      retries: 5
+      retries: 2
       start_period: 10s
 
   proxy:
@@ -91,7 +85,8 @@ services:
       web:
         condition: service_healthy
     networks:
-      - internal_net
+      - api_net
 
 networks:
-  internal_net:
+  api_net:
+    driver: bridge

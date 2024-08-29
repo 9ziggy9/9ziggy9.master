@@ -22,7 +22,14 @@ func staticHandler() http.Handler {
 	})
 }
 
-func routes() { http.Handle("/", staticHandler()) }
+func routes() {
+	http.Handle("/ping", http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK);
+			core.Log(core.SUCCESS, "PONG!");
+		}));
+	http.Handle("/", staticHandler());
+}
 
 func main() {
 	server := &http.Server{

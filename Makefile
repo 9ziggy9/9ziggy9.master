@@ -8,5 +8,8 @@ DUMMIES:=hello kill_port clean proxy.build up
 # FORWARD COMMANDS TO ALL SUBMAKES
 $(foreach mk, $(SUBMAKES), $(eval $(mk):; $(call FWD_SUBMAKE,$(mk))))
 
+tree:
+	tree -L 5 -I 'node_modules|css|dist'
+
 $(DUMMIES):
 	@:

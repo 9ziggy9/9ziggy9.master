@@ -1,8 +1,10 @@
 .PHONY: up clean DEPLOY
 
-up:
+deploy:
+	docker-compose down
+	docker image prune -f
 	docker-compose -f $(PATH_COMPOSE) build --progress=plain --no-cache
-	docker-compose up
+	docker-compose up --abort-on-container-exit --remove-orphans --force-recreate
 
 %.build:
 	@printf "$(BOLD)$(UNDERLINE)$(MAGENTA)\nBUILDING CONTAINER:"

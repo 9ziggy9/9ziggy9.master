@@ -134,6 +134,11 @@ func parseRoomIdFromPath(r *http.Request) uint64 {
 func RoutesWS(ws_rooms *WsRoomProvider) *http.ServeMux {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK);
+		core.Log(core.SUCCESS, "PONG!");
+	})
+
 	mux.HandleFunc("GET /{rmId}", func(w http.ResponseWriter, r *http.Request) {
 		core.Log(core.INFO, "client attempting to connect")
 		rmId := parseRoomIdFromPath(r)
